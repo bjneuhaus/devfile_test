@@ -7,7 +7,7 @@ metadata:
 components:
   - name: udi-container
     container:
-      image:  registry.redhat.io/devspaces/udi-rhel9
+      image:  registry.redhat.io/devspaces/udi-rhel9@sha256:cca6cbf5adcb5ce83392795573fe258d468568bddc3ad3618297e9e6234cfb79
       command: ["/bin/sh"]
       args: ["-c", "while true; do sleep 1000; done"]
       memoryLimit: 2Gi
