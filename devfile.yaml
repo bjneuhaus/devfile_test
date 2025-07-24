@@ -1,0 +1,36 @@
+schemaVersion: 2.2.0
+metadata:
+  name: hello-devfile-demo
+  version: 1.0.0
+  displayName: Hello World Devfile Demo
+  description: Eine kurze Demonstration für Devfile-Kommandos und Autostart.
+components:
+  - name: ubi-container
+    container:
+      image: registry.access.redhat.com/ubi8/ubi-minimal
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do sleep 1000; done"]
+      memoryLimit: 2Gi
+      mountSources: false
+
+commands:
+  - id: hello-1
+    exec:
+      label: "Hello World 1 (Autostart)"
+      commandLine: echo 'Hello World 1 from Devfile!'
+      component: ubi-container
+      group:
+        kind: run
+        isDefault: true
+
+  - id: hello-2
+    exec:
+      label: "Hello World 2 (manuell)"
+      commandLine: echo 'Hello World 2 from Devfile!'
+      component: ubi-container
+      group:
+        kind: run
+
+events:
+  postStart:
+    - hello-1
