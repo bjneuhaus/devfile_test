@@ -3,34 +3,39 @@ metadata:
   name: hello-devfile-demo
   version: 1.0.0
   displayName: Hello World Devfile Demo
-  description: Eine kurze Demonstration für Devfile-Kommandos und Autostart.
+  description: Eine kurze Demonstration für Devfile-Kommandos Settings und Autostart.
 components:
-  - name: ubi-container
+  - name: udi-container
     container:
-      image: registry.access.redhat.com/ubi8/ubi-minimal
+      image:  registry.redhat.io/devspaces/udi-rhel9
       command: ["/bin/sh"]
       args: ["-c", "while true; do sleep 1000; done"]
       memoryLimit: 2Gi
       mountSources: false
-
 commands:
   - id: hello-1
     exec:
       label: "Hello World 1 (Autostart)"
-      commandLine: echo 'Hello World 1 from Devfile!'
-      component: ubi-container
+      commandLine: echo 'Hello World 1 vom postStart aus dem Devfile!'
+      component: udi-container
       group:
         kind: run
         isDefault: true
-
   - id: hello-2
     exec:
-      label: "Hello World 2 (manuell)"
-      commandLine: echo 'Hello World 2 from Devfile!'
-      component: ubi-container
+      label: "1. Hello World 2 (manuell)"
+      commandLine: echo 'Hello World 2 als Task aus dem Devfile!'
+      component: udi-container
       group:
         kind: run
-
+  - id: start-http-server
+    exec:
+      label: "2. Start Python HTTP Server"
+      commandLine: python3 -m http.server 5000 --bind 0.0.0.0
+      component: udi-container
+      group:
+        kind: run
+        isDefault: true
 events:
   postStart:
     - hello-1
